@@ -1,0 +1,11 @@
+{
+	"Crawler":{
+		"dbHost": "localhost",
+		"dbPort": 27017,
+		"dbName": "ckans",
+		"dbUsername":"",
+		"dbPassword":"",
+		"instancesUrl":"http://instances.ckan.org/config/instances.json"
+	}	
+}
+	

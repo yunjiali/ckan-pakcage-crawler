@@ -1,0 +1,110 @@
+[
+			{
+				"id":"data_gv_at",
+				"ckanApi":true,
+				"apiBaseUrl":"http://www.data.gv.at/katalog/api"
+			},
+			{
+				"id":"govdata_de",
+				"ckanApi":true,
+				"apiBaseUrl":"https://www.govdata.de/ckan/api"
+			},
+			{
+				"id":"data_overheid_nl",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"OAI API. https://www.rijksmuseum.nl/api/"
+			},
+			{
+				"id":"data_gov",
+				"ckanApi":true,
+				"apiBaseUrl":"http://catalog.data.gov/api/"
+			},
+			{
+				"id":"data_nsw",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Not CKAN API. https://www.opengov.nsw.gov.au/api"
+			},
+			{
+				"id":"www_hri_fi",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Not CKAN API. http://dev.hel.fi/apis"
+			},
+			{
+				"id":"daten_berlin_de",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Not CKAN API. http://support.berlin.de/wiki/index.php/SimpleSearch_API"
+			},
+			{
+				"id":"daten_hamburg_de",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"On this webpage http://daten.hamburg.de/information/, API is said to be available. But opendata.hamburg.de/api redirects to the homepage."
+			},
+			{
+				"id":"data_denvergov_org",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+			},
+			{
+				"id":"open_data_europa_eu",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Not CKAN API. Has a sparql endpoint https://open-data.europa.eu/sparqlep"
+			},
+			{
+				"id":"healthdata_gov",
+				"ckanApi":true,
+				"apiBaseUrl":"http://hub.healthdata.gov/api"
+			},
+			{
+				"id":"data_linz_gv_at",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+
+			},
+			{
+				"id":"data_graz_gv_at",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+			},
+			{
+				"id":"opencolorado_org",
+				"ckanApi":true,
+				"apiBaseUrl":"http://data.opencolorado.org/api"
+			},
+			{
+				"id":"open_data_okfn_gr",
+				"ckanApi":true,
+				"apiBaseUrl":"http://ckan.okfn.gr/api/1"
+			},
+			{
+				"id":"data_gc_ca",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+			},
+			{
+				"id":"opendatacanarias_es",
+				"ckanApi":true,
+				"apiBaseUrl":"http://ckan.opendatacanarias.es/api"
+			},
+			{
+				"id":"datospublicos_gob_ar",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+			},
+			{
+				"id":"dati_gov_it",
+				"ckanApi":false,
+				"apiBaseUrl":null,
+				"comment":"Cannot find any API."
+			}
+]

@@ -1,0 +1,35 @@
+{
+  "name": "ckan-pakcage-crawler",
+  "version": "0.0.1",
+  "description": "Crawl package metadata from all the CKAN instances listed in http://instances.ckan.org/config/instances.json",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yunjiali/ckan-pakcage-crawler.git"
+  },
+  "keywords": [
+    "ckan",
+    "open",
+    "data",
+    "crawler",
+    "metadata"
+  ],
+  "author": "Yunjia Li",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "bc5efbf15b0cc26ebdb8d9963fdea1d8435dd200",
+  "dependencies": {
+    "underscore": "latest",
+    "async": "latest",
+    "request":"latest",
+    "mongodb":"latest",
+    "optimist":"latest",
+    "monk":"latest",
+    "string":"latest",
+    "config":"latest",
+    "jsonfile":"latest"
+  }
+}
