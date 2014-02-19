@@ -12,6 +12,7 @@ var CONFIG=require('config').Crawler;
 var	request=require('request');
 var jf = require('jsonfile');
 var argv=require('optimist').argv
+var winston = require('winston')
 
 if(argv.help){
 	console.info("--id		The ID of the website that you want to get package metadata, such as 'data_gov_uk'.");
@@ -20,15 +21,22 @@ if(argv.help){
 	process.exit(0);
 }
 
+var logger = new (winston.Logger)({
+    transports: [
+      new (winston.transports.Console)({ level: 'info' }),
+      new (winston.transports.File)({ level:'info',filename: 'package-metadata.log' })
+    ]
+  });
+
 var mongourl = "";
 if(CONFIG.dbUsername && CONFIG.dbPassword)
 	mongourl=CONFIG.dbUsername+":"+CONFIG.dbPassword+"@";
 mongourl+=CONFIG.dbHost+":"+CONFIG.dbPort+"/"+CONFIG.dbName;
 var db = monk(mongourl);
-console.info("Connected to MongoDB.");
-console.info("Create Index.");
+logger.info("Connected to MongoDB.");
+logger.info("Create Index.");
 //db.get('instances').ensureIndex({website_id:1},{unique:true});
-db.get('instances').ensureIndex({website_id:1, package_id:1}); 
+db.get('packages').ensureIndex({website_id:1, package_id:1}); 
 
 
 var packageArray=[];
@@ -45,15 +53,58 @@ if(argv.id){
 				packageArray.push(packageObj);
 			}
 			
-			console.log(packageArray.length+" packages.");
-
+			logger.info(argv.id+" has "+packageArray.length+" packages.");
+			async.eachSeries(packageArray,function(p,packageCallback){
+				getPackageMetadata(p.metadata_url, p.website_id,p.package_id,
+					function(errMetadata, package_obj){
+						if(errMetadata){
+							logger.error(p.website_id+"->+"+p.package_id+" error:"+errMetadata);
+							packageCallback(null);
+							return;
+						}
+						else{
+							if(!package_obj.success){
+								logger.error("Error get package metadata "+p.website_id+"->"+p.package_id);
+								packageCallback(null);
+								return;
+							}else{
+								var metadata_obj = {};
+								metadata_obj.website_id = p.website_id;
+								metadata_obj.package_id = p.package_id;
+								metadata_obj.metadata_url = p.metadata_url;
+								metadata_obj.metadata = package_obj.result;
+								db.get("packages").insert(metadata_obj, function(errInsert, metadata_new){
+									if(errInsert){
+										logger.error("Error insert package metadata "+p.website_id+"->"+p.package_id);
+										packageCallback(null);
+										return;
+									}
+									else
+									{
+										logger.info("Successfully insert package metadata "+p.website_id+"->"+p.package_id)
+										packageCallback(null, metadata_new);
+									}
+								});
+							}
+						}
+					});
+			},function(errPackages,results){
+				if(errPackages){
+					logger.error("Error "+errPackages)
+					process.exit(1);
+				}
+				else{
+					logger.info("Finish.");
+					process.exit(0);
+				}
+			});
 		}
 	)
 }
 else if(argv.all){
 	db.get("instances").find({package_list:{$exists:true}},
 		{id:true,api_base_url:true,package_list:true},function(errInstances, instances){
-			console.log(instances.length+" instances found.");
+			logger.info(instances.length+" instances found.");
 			for(var i=0;i<instances.length;i++){
 				var instance = instances[i];
 				for(var j=0;j<instance.package_list.length;j++){
@@ -64,7 +115,52 @@ else if(argv.all){
 					packageArray.push(packageObj);
 				}
 			}
-			console.log(packageArray.length+" packages.");
+			logger.info(packageArray.length+" packages in all.");
+
+			async.eachSeries(packageArray,function(p,packageCallback){
+				getPackageMetadata(p.metadata_url, p.website_id,p.package_id,
+					function(errMetadata, package_obj){
+						if(errMetadata){
+							logger.error(p.website_id+"->+"+p.package_id+" error:"+errMetadata);
+							packageCallback(null);
+							return;
+						}
+						else{
+							if(!package_obj.success){
+								logger.error("Error get package metadata "+p.website_id+"->"+p.package_id);
+								packageCallback(null);
+								return;
+							}else{
+								var metadata_obj = {};
+								metadata_obj.website_id = p.website_id;
+								metadata_obj.package_id = p.package_id;
+								metadata_obj.metadata_url = p.metadata_url;
+								metadata_obj.metadata = package_obj.result;
+								db.get("packages").insert(metadata_obj, function(errInsert, metadata_new){
+									if(errInsert){
+										logger.error("Error insert package metadata "+p.website_id+"->"+p.package_id);
+										packageCallback(null);
+										return;
+									}
+									else
+									{
+										logger.info("Successfully insert package metadata "+p.website_id+"->"+p.package_id)
+										packageCallback(null, metadata_new);
+									}
+								});
+							}
+						}
+					});
+			},function(errPackages,results){
+				if(errPackages){
+					logger.error("Error "+errPackages)
+					process.exit(1);
+				}
+				else{
+					logger.info("Finish.");
+					process.exit(0);
+				}
+			});
 
 		}
 	)
@@ -91,10 +187,10 @@ function getPackageMetadata(metadata_url, website_id, package_id, callback){
 		}
 		try{
 			var package_metadata=JSON.parse(bodyMetadata);
-			//console.log(package_list.success);
+			//logger.log(package_list.success);
 		}
 		catch(errParse){
-			console.error(errParse);
+			logger.error(errParse);
 			callback(website_id+"->"+package_id+" Error parsing response:"+bodyPackage,null)
 		//	callback("Error parsing response:"+bodyPackage.help,null);
 			return;

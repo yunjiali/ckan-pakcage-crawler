@@ -102,7 +102,7 @@ else if(argv.all){
 					return;
 				}
 				else{
-					console.log("success:"+package_list_obj.success);
+					//console.log("success:"+package_list_obj.success);
 					if(!package_list_obj.success){
 						console.error("Error get package_list:"+package_list_obj.help);
 						instanceCallback(null);

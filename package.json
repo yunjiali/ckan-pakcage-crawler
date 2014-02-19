@@ -30,6 +30,7 @@
     "monk":"latest",
     "string":"latest",
     "config":"latest",
-    "jsonfile":"latest"
+    "jsonfile":"latest",
+    "winston":"latest"
   }
 }
