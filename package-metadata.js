@@ -58,7 +58,7 @@ if(argv.id){
 				getPackageMetadata(p.metadata_url, p.website_id,p.package_id,
 					function(errMetadata, package_obj){
 						if(errMetadata){
-							logger.error(p.website_id+"->+"+p.package_id+" error:"+errMetadata);
+							logger.error(p.website_id+"->"+p.package_id+" error:"+errMetadata);
 							packageCallback(null);
 							return;
 						}
@@ -121,7 +121,7 @@ else if(argv.all){
 				getPackageMetadata(p.metadata_url, p.website_id,p.package_id,
 					function(errMetadata, package_obj){
 						if(errMetadata){
-							logger.error(p.website_id+"->+"+p.package_id+" error:"+errMetadata);
+							logger.error(p.website_id+"->"+p.package_id+" error:"+errMetadata);
 							packageCallback(null);
 							return;
 						}
@@ -185,13 +185,17 @@ function getPackageMetadata(metadata_url, website_id, package_id, callback){
 			callback("403 API key needed to access "+website_id+"->"+package_id,null);
 			return;
 		}
+		else if(resMetadata.statusCode == 500){
+			callback("500 Server error to access "+website_id+"->"+package_id,null);
+			return;
+		}
 		try{
 			var package_metadata=JSON.parse(bodyMetadata);
 			//logger.log(package_list.success);
 		}
 		catch(errParse){
 			logger.error(errParse);
-			callback(website_id+"->"+package_id+" Error parsing response:"+bodyPackage,null)
+			callback(website_id+"->"+package_id+" Error parsing response:"+bodyMetadata,null)
 		//	callback("Error parsing response:"+bodyPackage.help,null);
 			return;
 		}

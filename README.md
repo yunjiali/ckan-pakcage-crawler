@@ -14,4 +14,6 @@ ckan-pakcage-crawler
 
 ##How to run the programme
 * change db information in config\default.json to the correct database configuration
-* node instances.js
+* node instances.js to get the websites (instances) list
+* node get-packages.js --all or --id=id to get the package list of all or a certain website
+* node package-metadata.js --all or --id=id to get the package metadata from all or a certain website
