@@ -109,7 +109,7 @@ else if(argv.all){
 						return;
 					}else{
 						var package_list = package_list_obj.result;
-						console.log("Get "+package_list.length+" packages.")
+						console.log(instance.id+" get "+package_list.length+" packages.")
 						db.get("instances").findAndModify({
 							query:{id:instance.id},
 							update:{$set:{package_list:package_list, last_updated:Date.now(), authentication:false}},
