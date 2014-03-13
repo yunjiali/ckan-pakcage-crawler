@@ -57,7 +57,7 @@ MongoClient.connect(mongourl, function(err,db){
 			}
 			else{
 				console.log(results);
-				fs.appendFile("results/"+argv.field+"-group.csv","value,count\r\n");
+				fs.appendFileSync("results/"+argv.field+"-group.csv","value,count\r\n");
 				for(var i=0;i<results.length;i++){
 
 					var csvLine = "";
@@ -70,13 +70,11 @@ MongoClient.connect(mongourl, function(err,db){
 					else{
 						csvLine = results[i]._id.field.replace(/,/g,';').replace(/\r\n/,'.')+","+results[i].value.count+"\r\n";
 					}
-					fs.appendFile("results/"+argv.field+"-group.csv",csvLine);
+					fs.appendFileSync("results/"+argv.field+"-group.csv",csvLine);
 				}
 
 				console.log("finish");
 			}
-
-			
 
 	});
 
